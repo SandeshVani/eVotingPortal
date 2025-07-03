@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card text-center">
+    <div class="card-header">
+        <h2>Official Results</h2>
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">{{ campaign.CampaignName }}</h4>
+        <p class="text-muted">Constituency: {{ campaign.ConstituencyName }} | Status: {{ campaign.Status }}</p>
+        
+        <table class="table table-striped mt-4">
+            <thead class="table-dark">
+                <tr>
+                    <th>Rank</th>
+                    <th>Candidate</th>
+                    <th>Party</th>
+                    <th>Total Votes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in results %}
+                <tr>
+                    <td><strong>{{ loop.index }}</strong></td>
+                    <td>{{ r.CandidateName }}</td>
+                    <td>{{ r.PartyName }}</td>
+                    <td><strong>{{ r.TotalVotes }}</strong></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4">No votes were cast in this campaign.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+         <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary">&laquo; Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

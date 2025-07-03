@@ -1,0 +1,74 @@
+<!-- templates/admin_dashboard.html -->
+
+{% extends "layout.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Admin Dashboard</h2>
+    <a href="{{ url_for('create_campaign') }}" class="btn btn-primary">Create New Campaign</a>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        All Campaigns
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in campaigns %}
+                <tr>
+                    <td>{{ c.CampaignID }}</td>
+                    <td>{{ c.CampaignName }}</td>
+                    <td>
+                        <!-- Color-code the status badge -->
+                        {% if c.Status == 'Active' %}
+                            <span class="badge bg-success">{{ c.Status }}</span>
+                        {% elif c.Status == 'Upcoming' %}
+                            <span class="badge bg-info">{{ c.Status }}</span>
+                        {% elif c.Status == 'Expired' %}
+                            <span class="badge bg-warning text-dark">{{ c.Status }}</span>
+                        {% elif c.Status == 'Completed' %}
+                            <span class="badge bg-secondary">{{ c.Status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ c.StartDate.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>{{ c.EndDate.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>
+                        <a href="{{ url_for('manage_candidates', campaign_id=c.CampaignID) }}" class="btn btn-sm btn-info">Candidates</a>
+                        <a href="{{ url_for('update_campaign', campaign_id=c.CampaignID) }}" class="btn btn-sm btn-warning">Edit</a>
+                        
+                        {% if c.Status == 'Completed' %}
+                            <a href="{{ url_for('view_results', campaign_id=c.CampaignID) }}" class="btn btn-sm btn-success">View Results</a>
+                        {% elif c.Status == 'Expired' %}
+                            <form action="{{ url_for('publish_results', campaign_id=c.CampaignID) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-success">Publish</button>
+                            </form>
+                        {% endif %}
+
+                        <!-- *** THIS IS THE CORRECTED DELETE FORM *** -->
+                        <form action="{{ url_for('delete_campaign') }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this campaign and all its data? This cannot be undone.');">
+                            <!-- This hidden input sends the ID along with the form -->
+                            <input type="hidden" name="campaign_id" value="{{ c.CampaignID }}">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">No campaigns found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

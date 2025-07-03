@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="text-center p-5 mb-4 bg-light rounded-3">
+    <h1 class="display-4">Welcome to the E-Voting System</h1>
+    <p class="lead">Please select your login type to proceed.</p>
+    <hr class="my-4">
+    <a class="btn btn-primary btn-lg mx-2" href="{{ url_for('login', user_type='admin') }}" role="button">Admin Login</a>
+    <a class="btn btn-success btn-lg mx-2" href="{{ url_for('login', user_type='voter') }}" role="button">Voter Login</a>
+</div>
+{% endblock %}

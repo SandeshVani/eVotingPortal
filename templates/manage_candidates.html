@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2 class="mb-3">Manage Candidates for: <span class="text-primary">{{ campaign.CampaignName }}</span></h2>
+
+<div class="row">
+    <!-- Form to add new candidates -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">Add New Candidate</div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="pid" class="form-label">Candidate ID</label>
+                        <input type="text" name="pid" id="pid" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Candidate Name</label>
+                        <input type="text" name="name" id="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="party" class="form-label">Party Name</label>
+                        <input type="text" name="party" id="party" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Add Candidate</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table of existing candidates -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">Existing Candidates</div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr><th>ID</th><th>Name</th><th>Party</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for c in candidates %}
+                        <tr>
+                            <td>{{ c.CandidateID }}</td>
+                            <td>{{ c.CandidateName }}</td>
+                            <td>{{ c.PartyName }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="3" class="text-center">No candidates added yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mt-3">
+    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">&laquo; Back to Dashboard</a>
+</div>
+{% endblock %}

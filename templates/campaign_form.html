@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>{{ form_action }} Campaign</h3>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3">
+                <label for="cid" class="form-label">Campaign ID</label>
+                <input type="text" class="form-control" id="cid" name="cid" value="{{ campaign.CampaignID or '' }}" {% if form_action == 'Update' %}readonly{% endif %} required>
+            </div>
+            <div class="mb-3">
+                <label for="name" class="form-label">Campaign Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ campaign.CampaignName or '' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="constituency" class="form-label">Constituency</label>
+                <input type="text" class="form-control" id="constituency" name="constituency" value="{{ campaign.ConstituencyName or '' }}" required>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="start_date" class="form-label">Start Date & Time</label>
+                    <input type="datetime-local" class="form-control" id="start_date" name="start_date" value="{{ campaign.StartDate.strftime('%Y-%m-%dT%H:%M') if campaign.StartDate else '' }}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="end_date" class="form-label">End Date & Time</label>
+                    <input type="datetime-local" class="form-control" id="end_date" name="end_date" value="{{ campaign.EndDate.strftime('%Y-%m-%dT%H:%M') if campaign.EndDate else '' }}" required>
+                </div>
+            </div>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">{{ form_action }} Campaign</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

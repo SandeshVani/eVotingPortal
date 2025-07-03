@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Voter Dashboard</h2>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        Active Campaigns Available for Voting
+    </div>
+    <ul class="list-group list-group-flush">
+        {% for c in campaigns %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1">{{ c.CampaignName }}</h5>
+                    <small>Constituency: {{ c.ConstituencyName }} | Ends: {{ c.EndDate.strftime('%B %d, %Y at %I:%M %p') }}</small>
+                </div>
+                {% if c.CampaignID in voted_ids %}
+                    <span class="badge bg-success p-2">Voted <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/></svg></span>
+                {% else %}
+                    <a href="{{ url_for('vote', campaign_id=c.CampaignID) }}" class="btn btn-primary">Vote Now &rarr;</a>
+                {% endif %}
+            </li>
+        {% else %}
+            <li class="list-group-item text-center">There are no active campaigns at the moment.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card text-center">
+    <div class="card-header">
+        <h2>{{ campaign.CampaignName }}</h2>
+        <p class="text-muted">Constituency: {{ campaign.ConstituencyName }}</p>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Please cast your vote by selecting one candidate</h5>
+        <form method="POST">
+            <ul class="list-group my-4">
+                {% for c in candidates %}
+                <li class="list-group-item">
+                    <input type="radio" class="form-check-input me-2" name="candidate_id" value="{{ c.CandidateID }}" id="candidate-{{ c.CandidateID }}" required>
+                    <label class="form-check-label stretched-link" for="candidate-{{ c.CandidateID }}">
+                        <strong>{{ c.CandidateName }}</strong> ({{ c.PartyName }})
+                    </label>
+                </li>
+                {% else %}
+                <li class="list-group-item">No candidates are available for this campaign.</li>
+                {% endfor %}
+            </ul>
+            <a href="{{ url_for('voter_dashboard') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-success btn-lg">Submit Vote</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
