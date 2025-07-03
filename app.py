@@ -14,7 +14,14 @@ app.secret_key = 'a_very_secret_and_hard_to_guess_key'
 
 # --- Database Setup ---
 # Create a single instance of the database manager for the whole app.
-db = DatabaseManager(user="root", password="Qawsedrftg@1", host="localhost", database="eVotingMpDb")
+import os
+
+db = DatabaseManager(
+    user=os.environ.get("DB_USER"),
+    password=os.environ.get("DB_PASSWORD"),
+    host=os.environ.get("DB_HOST"),
+    database=os.environ.get("DB_NAME")
+)
 
 # --- Admin Credentials (from your original code) ---
 ADMIN_USERNAME = "admin@"
